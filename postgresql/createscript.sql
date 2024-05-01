@@ -48,12 +48,12 @@ CREATE TABLE created_hotel_room_type (
 CREATE TABLE booked_reservation (
 	id SERIAL PRIMARY KEY,
 	hotel_room_type INT NOT NULL,
-	from_date Date,
-	to_date Date,
-	number_of_rooms INT
+	from_date Date NOT NULL,
+	to_date Date NOT NULL,
+	number_of_rooms INT NOT NULL
 )
 
 CREATE TABLE canceled_reservation (
 	id SERIAL PRIMARY KEY,
-	reservation_id INT
+	reservation_id INT NOT NULL
 )
