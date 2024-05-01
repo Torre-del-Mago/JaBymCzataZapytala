@@ -45,12 +45,17 @@ CREATE TABLE created_hotel_room_type (
 	price_per_night REAL NOT NULL
 );
 
+CREATE TABLE booked_hotel_rooms(
+	id SERIAL PRIMARY KEY,
+	reservation_id integer NOT NULL,
+    hotel_room_type integer NOT NULL,
+    number_of_rooms integer NOT NULL,
+)
+
 CREATE TABLE booked_reservation (
 	id SERIAL PRIMARY KEY,
-	hotel_room_type INT NOT NULL,
 	from_date Date NOT NULL,
-	to_date Date NOT NULL,
-	number_of_rooms INT NOT NULL
+	to_date Date NOT NULL
 )
 
 CREATE TABLE canceled_reservation (
