@@ -1,4 +1,4 @@
-﻿using Hotel.Model.Command;
+﻿using Messages;
 
 namespace Hotel.Service.CommandHandler
 {

@@ -1,29 +1,51 @@
-﻿using Hotel.Model.Command;
+﻿using Hotel.DTO;
 using Hotel.Model.Event;
+using MassTransit;
+using Messages;
 
 namespace Hotel.Service.MessageSender
 {
     public class MessageSender : IMessageSender
     {
-        public void SendBookedReservationEvent(BookedReservationEvent reservationEvent, List<BookedHotelRoomsEvent> hotelRoomsEvent)
+        private IPublishEndpoint _endpoint;
+        public MessageSender(IPublishEndpoint endpoint) { 
+            this._endpoint = endpoint;
+        }
+        public async Task SendNegativeResponseToOffer(BookedReservationCommand command)
         {
-            throw new NotImplementedException();
+            await _endpoint.Publish<NegativeHotelReservationResponse>(new NegativeHotelReservationResponse() { 
+                ID = command.ID,
+                CorrelationId = command.CorrelationId
+            });
         }
 
-        public void SendReservationCannotBeMade(BookedReservationCommand command)
+        public async Task SendPositiveResponseToOffer(BookedReservationCommand command)
         {
-            throw new NotImplementedException();
+            await _endpoint.Publish<PositiveHotelReservationResponse>(new PositiveHotelReservationResponse()
+            {
+                ID = command.ID,
+                CorrelationId = command.CorrelationId
+            });
         }
 
-        public void SendReservationMadeSuccessfully(BookedReservationCommand command)
+        public async Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command)
         {
-            throw new NotImplementedException();
+            await _endpoint.Publish<BookedReservationForRead>(new BookedReservationForRead()
+            {
+                ReservationId = reservationEvent.Id,
+                FromDate = command.FromDate,
+                ToDate = command.ToDate,
+                HotelId = command.HotelId,
+                RoomsDTO = command.RoomsDTO
+            });
         }
 
-
-        public void SendCanceledReservationEvent(CanceledReservationEvent reservationEvent)
+        public async Task SendCanceledReservationEvent(CanceledReservationCommand command)
         {
-            throw new NotImplementedException();
+            await _endpoint.Publish<CanceledReservationForRead>(new CanceledReservationForRead()
+            {
+                ReservationId = command.ReservationId
+            });
         }
     }
 }

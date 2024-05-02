@@ -1,16 +1,16 @@
-﻿using Hotel.Model.Command;
-using Hotel.Model.Event;
+﻿using Hotel.Model.Event;
+using Messages;
 
 namespace Hotel.Service.MessageSender
 {
     public interface IMessageSender
     {
-        void SendReservationCannotBeMade(BookedReservationCommand command);
+        Task SendNegativeResponseToOffer(BookedReservationCommand command);
 
-        void SendReservationMadeSuccessfully(BookedReservationCommand command);
+        Task SendPositiveResponseToOffer(BookedReservationCommand command);
 
-        void SendBookedReservationEvent(BookedReservationEvent reservationEvent, List<BookedHotelRoomsEvent> hotelRoomsEvent);
+        Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command);
 
-        void SendCanceledReservationEvent(CanceledReservationEvent reservationEvent);
+        Task SendCanceledReservationEvent(CanceledReservationCommand command);
     }
 }

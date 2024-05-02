@@ -1,8 +1,8 @@
 ﻿using Hotel.DTO;
-using Hotel.Model.Command;
 using Hotel.Repository.BookedReservation;
 using Hotel.Repository.CanceledReservation;
 using Hotel.Service.MessageSender;
+using Messages;
 
 namespace Hotel.Service.CommandHandler
 {
@@ -24,19 +24,19 @@ namespace Hotel.Service.CommandHandler
             var canInsertEvent = await _bookedRepo.canReservationBeMade(command);
             if(!canInsertEvent)
             {
-                _messageSender.SendReservationCannotBeMade(command);
+                _messageSender.SendNegativeResponseToOffer(command);
                 return;
             }
 
             BookedEvent bookedEvent = await _bookedRepo.insertEvent(command);
-            _messageSender.SendReservationMadeSuccessfully(command);
-            _messageSender.SendBookedReservationEvent(bookedEvent.BookedReservation, bookedEvent.HotelRooms);
+            await _messageSender.SendPositiveResponseToOffer(command);
+            await _messageSender.SendBookedReservationEvent(bookedEvent.BookedReservation, command);
         }
 
         public async Task HandleCommand(CanceledReservationCommand command)
         {
-            var canceledReservation = await _canceledRepo.insertEvent(command);
-            _messageSender.SendCanceledReservationEvent(canceledReservation);
+            await _canceledRepo.insertEvent(command);
+            await _messageSender.SendCanceledReservationEvent(command);
         }
     }
 }
