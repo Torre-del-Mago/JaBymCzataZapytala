@@ -1,5 +1,5 @@
 ﻿using Hotel.DTO;
-using Hotel.Model.Command;
+using Messages;
 
 namespace Hotel.Repository.BookedReservation
 {

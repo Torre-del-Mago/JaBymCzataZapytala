@@ -1,5 +1,5 @@
-﻿using Hotel.Model.Command;
-using Hotel.Model.Event;
+﻿using Hotel.Model.Event;
+using Messages;
 
 namespace Hotel.Repository.CanceledReservation
 {
@@ -17,6 +17,8 @@ namespace Hotel.Repository.CanceledReservation
                 ReservationId = command.ReservationId,
             };
             await _context.CanceledReservations.AddAsync(reservationEvent);
+            var active = _context.ActiveReservations.First(x => x.Id == command.ReservationId);
+            _context.ActiveReservations.Remove(active);
             await _context.SaveChangesAsync();
             return reservationEvent;
         }

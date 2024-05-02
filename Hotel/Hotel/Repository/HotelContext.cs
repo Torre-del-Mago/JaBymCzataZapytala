@@ -5,6 +5,7 @@ namespace Hotel.Repository
 {
     public class HotelContext : DbContext
     {
+        public DbSet<ActiveBookedReservationEvent> ActiveReservations { get; set; }
         public DbSet<BookedReservationEvent> BookedReservations { get; set; }
         public DbSet<BookedHotelRoomsEvent> BookedHotelRooms { get; set; }
         public DbSet<CanceledReservationEvent> CanceledReservations { get; set;}

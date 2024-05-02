@@ -52,6 +52,12 @@ CREATE TABLE booked_hotel_rooms(
     number_of_rooms integer NOT NULL,
 )
 
+CREATE TABLE active_booked_reservation (
+	id int PRIMARY KEY,
+	from_date Date NOT NULL,
+	to_date Date NOT NULL
+)
+
 CREATE TABLE booked_reservation (
 	id SERIAL PRIMARY KEY,
 	from_date Date NOT NULL,
