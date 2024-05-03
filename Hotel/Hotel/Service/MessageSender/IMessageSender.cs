@@ -7,7 +7,7 @@ namespace Hotel.Service.MessageSender
     {
         Task SendNegativeResponseToOffer(BookedReservationCommand command);
 
-        Task SendPositiveResponseToOffer(BookedReservationCommand command);
+        Task SendPositiveResponseToOffer(BookedReservationCommand command, BookedReservationEvent reservationEvent);
 
         Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command);
 

@@ -19,12 +19,13 @@ namespace Hotel.Service.MessageSender
             });
         }
 
-        public async Task SendPositiveResponseToOffer(BookedReservationCommand command)
+        public async Task SendPositiveResponseToOffer(BookedReservationCommand command, BookedReservationEvent reservationEvent)
         {
             await _endpoint.Publish<PositiveHotelReservationResponse>(new PositiveHotelReservationResponse()
             {
                 ID = command.ID,
-                CorrelationId = command.CorrelationId
+                CorrelationId = command.CorrelationId,
+                ReservationId = reservationEvent.Id
             });
         }
 

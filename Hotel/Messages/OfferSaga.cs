@@ -22,6 +22,8 @@ namespace Messages
     {
         public string ID { get; set; }
         public Guid CorrelationId { get; set; }
+
+        public int ReservationId { get; set; }
     }
 
     public class NegativeHotelReservationResponse : CorrelatedBy<Guid>
