@@ -1,4 +1,4 @@
-﻿using Hotel.Command.DTO;
+﻿using Hotel.Command.Model.Event;
 using Messages;
 
 namespace Hotel.Command.Repository.BookedReservation
@@ -7,6 +7,6 @@ namespace Hotel.Command.Repository.BookedReservation
     {
         Task<bool> canReservationBeMade(BookedReservationCommand command);
 
-        Task<BookedEvent> insertEvent(BookedReservationCommand command);
+        Task<BookedReservationEvent> insertEvent(BookedReservationCommand command);
     }
 }
