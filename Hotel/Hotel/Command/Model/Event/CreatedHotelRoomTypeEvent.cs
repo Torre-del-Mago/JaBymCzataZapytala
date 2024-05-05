@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hotel.Model.Event
+namespace Hotel.Command.Model.Event
 {
     [Table(name: "created_hotel_room_type")]
-    public class CreatedHotelRoomType
+    public class CreatedHotelRoomTypeEvent
     {
         [Key]
         public int Id { get; set; }

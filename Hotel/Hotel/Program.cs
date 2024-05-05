@@ -1,6 +1,6 @@
-using Hotel.Repository.BookedReservation;
-using Hotel.Repository.CanceledReservation;
-using Hotel.Service.CommandHandler;
+using Hotel.Command.CommandHandler;
+using Hotel.Command.Repository.BookedReservation;
+using Hotel.Command.Repository.CanceledReservation;
 using Hotel.Service.MessageSender;
 
 var builder = WebApplication.CreateBuilder(args);

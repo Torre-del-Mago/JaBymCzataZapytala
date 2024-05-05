@@ -1,4 +1,4 @@
-﻿using Hotel.Model.Event;
+﻿using Hotel.Command.Model.Event;
 using Messages;
 
 namespace Hotel.Service.MessageSender

@@ -1,10 +1,10 @@
-﻿using Hotel.DTO;
-using Hotel.Repository.BookedReservation;
-using Hotel.Repository.CanceledReservation;
+﻿using Hotel.Command.DTO;
+using Hotel.Command.Repository.BookedReservation;
+using Hotel.Command.Repository.CanceledReservation;
 using Hotel.Service.MessageSender;
 using Messages;
 
-namespace Hotel.Service.CommandHandler
+namespace Hotel.Command.CommandHandler
 {
     public class HotelCommandHandler
         : IHotelCommandHandler
@@ -12,8 +12,9 @@ namespace Hotel.Service.CommandHandler
         private IMessageSender _messageSender;
         private IBookedReservationRepository _bookedRepo;
         private ICanceledReservationRepository _canceledRepo;
-        public HotelCommandHandler(IMessageSender messageSender, IBookedReservationRepository bookedReservationRepository, 
-            ICanceledReservationRepository canceledReservationRepository) {
+        public HotelCommandHandler(IMessageSender messageSender, IBookedReservationRepository bookedReservationRepository,
+            ICanceledReservationRepository canceledReservationRepository)
+        {
             _messageSender = messageSender;
             _bookedRepo = bookedReservationRepository;
             _canceledRepo = canceledReservationRepository;
@@ -22,7 +23,7 @@ namespace Hotel.Service.CommandHandler
         public async Task HandleCommand(BookedReservationCommand command)
         {
             var canInsertEvent = await _bookedRepo.canReservationBeMade(command);
-            if(!canInsertEvent)
+            if (!canInsertEvent)
             {
                 _messageSender.SendNegativeResponseToOffer(command);
                 return;

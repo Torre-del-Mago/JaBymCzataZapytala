@@ -1,10 +1,9 @@
-﻿using Hotel.Model.Event;
+﻿using Hotel.Command.Model.Event;
 
-namespace Hotel.DTO
+namespace Hotel.Command.DTO
 {
     public class BookedEvent
     {
         public BookedReservationEvent BookedReservation { get; set; }
-        public List<BookedHotelRoomsEvent> HotelRooms { get; set;}
     }
 }

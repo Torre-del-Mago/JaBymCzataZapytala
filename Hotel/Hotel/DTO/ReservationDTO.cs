@@ -1,6 +1,7 @@
 ﻿namespace Hotel.DTO
 {
-    public class BookedReservationForRead
+    // Object should be transfered to Query component
+    public class ReservationDTO
     {
         public int ReservationId { get; set; }
         public int HotelId { get; set; }

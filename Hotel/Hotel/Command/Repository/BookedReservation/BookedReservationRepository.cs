@@ -1,9 +1,9 @@
-﻿using Hotel.DTO;
-
-using Hotel.Model.Event;
+﻿using Hotel.Command.DTO;
+using Hotel.Command.Model.Event;
+using Hotel.Command.Repository;
 using Messages;
 
-namespace Hotel.Repository.BookedReservation
+namespace Hotel.Command.Repository.BookedReservation
 {
     public class BookedReservationRepository : IBookedReservationRepository
     {
@@ -11,26 +11,26 @@ namespace Hotel.Repository.BookedReservation
 
         public BookedReservationRepository(HotelContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-        private bool isEnoughRommsAvailable(int typeOfRoom, int numberOfRooms, Dictionary<int, int> roomsTaken, List<CreatedHotelRoomType> roomTypes)
+        private bool isEnoughRommsAvailable(int typeOfRoom, int numberOfRooms, Dictionary<int, int> roomsTaken, List<CreatedHotelRoomTypeEvent> roomTypes)
         {
-            return (roomsTaken[typeOfRoom]+numberOfRooms) <= roomTypes.First(r => r.RoomTypeId == typeOfRoom).NumberOfRooms;
+            return roomsTaken[typeOfRoom] + numberOfRooms <= roomTypes.First(r => r.RoomTypeId == typeOfRoom).NumberOfRooms;
         }
 
         public async Task<bool> canReservationBeMade(BookedReservationCommand command)
         {
-            List<CreatedHotelRoomType> hotelRoomTypes = _context.HotelRoomTypes
+            List<CreatedHotelRoomTypeEvent> hotelRoomTypes = _context.HotelRoomTypes
                 .Where(hotelRoomType => hotelRoomType.HotelId == command.HotelId)
                 .ToList();
 
             List<int> reservationIds = _context.ActiveReservations.Where(r => r.FromDate <= command.FromDate && r.ToDate >= command.ToDate).Select(r => r.Id).ToList();
             List<BookedHotelRoomsEvent> hotelRooms = _context.BookedHotelRooms.Where(hr => reservationIds.Contains(hr.ReservationId)).ToList();
             Dictionary<int, int> hotelTypesTaken = new Dictionary<int, int>();
-            foreach (BookedHotelRoomsEvent hr in  hotelRooms)
+            foreach (BookedHotelRoomsEvent hr in hotelRooms)
             {
-                if(!hotelTypesTaken.ContainsKey(hr.HotelRoomType))
+                if (!hotelTypesTaken.ContainsKey(hr.HotelRoomType))
                 {
                     hotelTypesTaken.Add(hr.HotelRoomType, hr.NumberOfRooms);
                 }
@@ -40,9 +40,9 @@ namespace Hotel.Repository.BookedReservation
                 }
             }
 
-            foreach(KeyValuePair<int, int> entry in command.RoomsDTO)
+            foreach (KeyValuePair<int, int> entry in command.RoomsDTO)
             {
-                if(!isEnoughRommsAvailable(entry.Key, entry.Value, hotelTypesTaken, hotelRoomTypes))
+                if (!isEnoughRommsAvailable(entry.Key, entry.Value, hotelTypesTaken, hotelRoomTypes))
                 {
                     return false;
                 }
@@ -67,7 +67,7 @@ namespace Hotel.Repository.BookedReservation
             _context.ActiveReservations.Add(activeBooked);
 
             List<BookedHotelRoomsEvent> hotelRoomsEvents = new List<BookedHotelRoomsEvent>();
-            foreach(KeyValuePair<int, int> entry in command.RoomsDTO)
+            foreach (KeyValuePair<int, int> entry in command.RoomsDTO)
             {
                 hotelRoomsEvents.Add(new BookedHotelRoomsEvent()
                 {
@@ -80,7 +80,7 @@ namespace Hotel.Repository.BookedReservation
 
             await _context.SaveChangesAsync();
 
-            return new BookedEvent() { BookedReservation = reservationEvent, HotelRooms = hotelRoomsEvents };
+            return new BookedEvent() { BookedReservation = reservationEvent };
 
         }
     }

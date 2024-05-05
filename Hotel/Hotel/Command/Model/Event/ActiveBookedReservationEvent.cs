@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hotel.Model.Event
+namespace Hotel.Command.Model.Event
 {
     [Table(name: "booked_reservation")]
-    public class BookedReservationEvent
+    public class ActiveBookedReservationEvent
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]
