@@ -1,5 +1,4 @@
-﻿using Hotel.Command.DTO;
-using Hotel.Command.Model.Event;
+﻿using Hotel.Command.Model.Event;
 using Hotel.Command.Repository;
 using Messages;
 
@@ -50,7 +49,7 @@ namespace Hotel.Command.Repository.BookedReservation
             return true;
         }
 
-        public async Task<BookedEvent> insertEvent(BookedReservationCommand command)
+        public async Task<BookedReservationEvent> insertEvent(BookedReservationCommand command)
         {
             BookedReservationEvent reservationEvent = new BookedReservationEvent()
             {
@@ -80,7 +79,7 @@ namespace Hotel.Command.Repository.BookedReservation
 
             await _context.SaveChangesAsync();
 
-            return new BookedEvent() { BookedReservation = reservationEvent };
+            return reservationEvent;
 
         }
     }
