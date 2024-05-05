@@ -1,7 +1,7 @@
 ﻿using Messages;
-using Hotel.Model.Event;
+using Hotel.Command.Model.Event;
 
-namespace Hotel.Repository.CanceledReservation
+namespace Hotel.Command.Repository.CanceledReservation
 {
     public interface ICanceledReservationRepository
     {

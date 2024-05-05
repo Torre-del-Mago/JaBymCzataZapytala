@@ -1,5 +1,5 @@
-﻿using Hotel.DTO;
-using Hotel.Model.Event;
+﻿using Hotel.Command.Model.Event;
+using Hotel.DTO;
 using MassTransit;
 using Messages;
 
@@ -31,7 +31,7 @@ namespace Hotel.Service.MessageSender
 
         public async Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command)
         {
-            await _endpoint.Publish<BookedReservationForRead>(new BookedReservationForRead()
+            await _endpoint.Publish<ReservationDTO>(new ReservationDTO()
             {
                 ReservationId = reservationEvent.Id,
                 FromDate = command.FromDate,
@@ -43,7 +43,7 @@ namespace Hotel.Service.MessageSender
 
         public async Task SendCanceledReservationEvent(CanceledReservationCommand command)
         {
-            await _endpoint.Publish<CanceledReservationForRead>(new CanceledReservationForRead()
+            await _endpoint.Publish<CanceledReservationDTO>(new CanceledReservationDTO()
             {
                 ReservationId = command.ReservationId
             });

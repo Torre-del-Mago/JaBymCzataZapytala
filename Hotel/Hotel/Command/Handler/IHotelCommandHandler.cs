@@ -1,6 +1,6 @@
 ﻿using Messages;
 
-namespace Hotel.Service.CommandHandler
+namespace Hotel.Command.CommandHandler
 {
     public interface IHotelCommandHandler
     {

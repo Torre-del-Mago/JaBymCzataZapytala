@@ -1,9 +1,10 @@
-﻿using Hotel.Model.Event;
+﻿using Hotel.Command.Model.Event;
+using Hotel.Command.Repository;
 using Messages;
 
-namespace Hotel.Repository.CanceledReservation
+namespace Hotel.Command.Repository.CanceledReservation
 {
-    public class CanceledReservationRepository: ICanceledReservationRepository
+    public class CanceledReservationRepository : ICanceledReservationRepository
     {
         private HotelContext _context;
         public CanceledReservationRepository(HotelContext context)
@@ -13,7 +14,8 @@ namespace Hotel.Repository.CanceledReservation
 
         public async Task<CanceledReservationEvent> insertEvent(CanceledReservationCommand command)
         {
-            CanceledReservationEvent reservationEvent = new CanceledReservationEvent() { 
+            CanceledReservationEvent reservationEvent = new CanceledReservationEvent()
+            {
                 ReservationId = command.ReservationId,
             };
             await _context.CanceledReservations.AddAsync(reservationEvent);

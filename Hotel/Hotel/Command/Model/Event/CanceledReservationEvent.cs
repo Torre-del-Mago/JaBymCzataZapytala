@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hotel.Model.Event
+namespace Hotel.Command.Model.Event
 {
     [Table(name: "canceled_reservation")]
     public class CanceledReservationEvent

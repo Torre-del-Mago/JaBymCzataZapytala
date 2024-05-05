@@ -1,7 +1,7 @@
-﻿using Hotel.DTO;
+﻿using Hotel.Command.DTO;
 using Messages;
 
-namespace Hotel.Repository.BookedReservation
+namespace Hotel.Command.Repository.BookedReservation
 {
     public interface IBookedReservationRepository
     {
