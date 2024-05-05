@@ -16,6 +16,8 @@ builder.Services.AddScoped<ICanceledReservationRepository, CanceledReservationRe
 builder.Services.AddScoped<IHotelCommandHandler, HotelCommandHandler>();
 builder.Services.AddScoped<IMessageSender, MessageSender>();
 
+//hotel-command-queue
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
