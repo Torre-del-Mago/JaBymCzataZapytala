@@ -2,11 +2,18 @@
 {
     public class HotelQuery
     {
-        UInt128 aaaa { get; set; }
+        int HotelId { get; set; }
+        DateTime From { get; set; }
+        DateTime To { get; set; }
+        int NumberOfPeople { get; set; }
     }
 
     public class HotelListQuery
     {
-        UInt128 aaaa { get; set; }
+        String Country { get; set; }
+        DateTime From { get; set; }
+        DateTime To { get; set; }
+        int NumberOfPeople { get; set; }
+
     }
 }
