@@ -1,4 +1,4 @@
-﻿using Hotel.Command.Model.Event;
+﻿using Hotel.Command.Model;
 using Hotel.Command.Repository;
 using Messages;
 
@@ -13,18 +13,18 @@ namespace Hotel.Command.Repository.BookedReservation
             _context = context;
         }
 
-        private bool isEnoughRommsAvailable(int typeOfRoom, int numberOfRooms, Dictionary<int, int> roomsTaken, List<CreatedHotelRoomTypeEvent> roomTypes)
+        private bool isEnoughRommsAvailable(int typeOfRoom, int numberOfRooms, Dictionary<int, int> roomsTaken, List<HotelRoomType> roomTypes)
         {
             return roomsTaken[typeOfRoom] + numberOfRooms <= roomTypes.First(r => r.RoomTypeId == typeOfRoom).NumberOfRooms;
         }
 
         public async Task<bool> canReservationBeMade(BookedReservationCommand command)
         {
-            List<CreatedHotelRoomTypeEvent> hotelRoomTypes = _context.HotelRoomTypes
+            List<HotelRoomType> hotelRoomTypes = _context.HotelRoomTypes
                 .Where(hotelRoomType => hotelRoomType.HotelId == command.HotelId)
                 .ToList();
 
-            List<int> reservationIds = _context.ActiveReservations.Where(r => r.FromDate <= command.FromDate && r.ToDate >= command.ToDate).Select(r => r.Id).ToList();
+            List<int> reservationIds = _context.Reservations.Where(r => r.FromDate <= command.FromDate && r.ToDate >= command.ToDate).Select(r => r.Id).ToList();
             List<BookedHotelRoomsEvent> hotelRooms = _context.BookedHotelRooms.Where(hr => reservationIds.Contains(hr.ReservationId)).ToList();
             Dictionary<int, int> hotelTypesTaken = new Dictionary<int, int>();
             foreach (BookedHotelRoomsEvent hr in hotelRooms)
@@ -57,13 +57,13 @@ namespace Hotel.Command.Repository.BookedReservation
                 ToDate = command.ToDate
             };
             _context.BookedReservations.Add(reservationEvent);
-            ActiveBookedReservationEvent activeBooked = new ActiveBookedReservationEvent()
+            Reservation activeBooked = new Reservation()
             {
                 Id = reservationEvent.Id,
                 FromDate = command.FromDate,
                 ToDate = command.ToDate
             };
-            _context.ActiveReservations.Add(activeBooked);
+            _context.Reservations.Add(activeBooked);
 
             List<BookedHotelRoomsEvent> hotelRoomsEvents = new List<BookedHotelRoomsEvent>();
             foreach (KeyValuePair<int, int> entry in command.RoomsDTO)

@@ -1,4 +1,4 @@
-﻿using Hotel.Command.Model.Event;
+﻿using Hotel.Command.Model;
 using Hotel.DTO;
 using MassTransit;
 using Messages;

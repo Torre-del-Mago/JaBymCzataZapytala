@@ -1,5 +1,5 @@
 ﻿
-using Hotel.Command.Model.Event;
+using Hotel.Command.Model;
 using Hotel.Command.Repository.BookedReservation;
 using Hotel.Command.Repository.CanceledReservation;
 using Hotel.Service.MessageSender;

@@ -1,5 +1,5 @@
 ﻿using Messages;
-using Hotel.Command.Model.Event;
+using Hotel.Command.Model;
 
 namespace Hotel.Command.Repository.CanceledReservation
 {
