@@ -1,4 +1,4 @@
-﻿using Hotel.Command.Model.Event;
+﻿using Hotel.Command.Model;
 using Messages;
 
 namespace Hotel.Command.Repository.BookedReservation

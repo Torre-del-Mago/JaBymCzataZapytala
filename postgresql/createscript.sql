@@ -9,18 +9,18 @@
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;*/
 
-CREATE TABLE created_diet (
+CREATE TABLE diet (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE created_hotel (
+CREATE TABLE hotel (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
 	discount REAL NOT NULL
 );
 
-CREATE TABLE created_hotel_diet (
+CREATE TABLE hotel_diet (
 	hotel_id INT NOT NULL,
 	diet_id INT NOT NULL,
 	PRIMARY KEY(hotel_id, diet_id)
@@ -32,12 +32,13 @@ CREATE TABLE created_hotel_diet (
 	    REFERENCES created_diet(id)*/
 );
 
-CREATE TABLE created_room_type (
+CREATE TABLE room_type (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(50) UNIQUE NOT NULL
+	name VARCHAR(50) UNIQUE NOT NULL,
+	number_of_people INT NOT NULL
 );
 
-CREATE TABLE created_hotel_room_type (
+CREATE TABLE hotel_room_type (
 	id SERIAL PRIMARY KEY,
 	hotel_id INT NOT NULL,
 	room_type_id INT NOT NULL,
@@ -45,24 +46,37 @@ CREATE TABLE created_hotel_room_type (
 	price_per_night REAL NOT NULL
 );
 
+CREATE TABLE reservation (
+	id int PRIMARY KEY,
+	from_date Date NOT NULL,
+	to_date Date NOT NULL,
+	active boolean NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE reserved_rooms (
+	id SERIAL PRIMARY KEY,
+	reservation_id integer NOT NULL,
+    hotel_room_type integer NOT NULL,
+    number_of_rooms integer NOT NULL
+);
+
 CREATE TABLE booked_hotel_rooms(
 	id SERIAL PRIMARY KEY,
 	reservation_id integer NOT NULL,
     hotel_room_type integer NOT NULL,
-    number_of_rooms integer NOT NULL,
-)
-
-CREATE TABLE active_booked_reservation (
-	id int PRIMARY KEY,
-	from_date Date NOT NULL,
-	to_date Date NOT NULL
-)
+    number_of_rooms integer NOT NULL
+);
 
 CREATE TABLE booked_reservation (
 	id SERIAL PRIMARY KEY,
 	from_date Date NOT NULL,
 	to_date Date NOT NULL
-)
+);
+
+CREATE TABLE canceled_reservation (
+	id SERIAL PRIMARY KEY,
+	reservation_id INT NOT NULL
+);
 
 CREATE TABLE canceled_reservation (
 	id SERIAL PRIMARY KEY,

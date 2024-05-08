@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hotel.Command.Model.Event
+namespace Hotel.Command.Model
 {
-    [Table(name: "booked_reservation")]
-    public class ActiveBookedReservationEvent
+    [Table(name: "reservation")]
+    public class Reservation
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -17,5 +17,9 @@ namespace Hotel.Command.Model.Event
         [Required]
         [Column("to_date")]
         public DateTime ToDate { get; set; }
+
+        [Required]
+        [Column("active")]
+        public bool Active { get; set; } = true;
     }
 }
