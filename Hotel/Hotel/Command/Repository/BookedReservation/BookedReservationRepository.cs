@@ -24,7 +24,9 @@ namespace Hotel.Command.Repository.BookedReservation
                 .Where(hotelRoomType => hotelRoomType.HotelId == command.HotelId)
                 .ToList();
 
-            List<int> reservationIds = _context.Reservations.Where(r => r.FromDate <= command.FromDate && r.ToDate >= command.ToDate).Select(r => r.Id).ToList();
+            List<int> bookedReservationIds = _context.BookedReservations.Where(r => r.FromDate <= command.FromDate && r.ToDate >= command.ToDate).Select(r => r.Id).ToList();
+            List<int> canceledReservationIds = _context.CanceledReservations.Select(r => r.ReservationId).ToList();
+            List<int> reservationIds = bookedReservationIds.Where(r => !canceledReservationIds.Contains(r)).ToList();
             List<BookedHotelRoomsEvent> hotelRooms = _context.BookedHotelRooms.Where(hr => reservationIds.Contains(hr.ReservationId)).ToList();
             Dictionary<int, int> hotelTypesTaken = new Dictionary<int, int>();
             foreach (BookedHotelRoomsEvent hr in hotelRooms)

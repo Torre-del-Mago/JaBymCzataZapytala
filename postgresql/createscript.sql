@@ -49,7 +49,8 @@ CREATE TABLE hotel_room_type (
 CREATE TABLE reservation (
 	id int PRIMARY KEY,
 	from_date Date NOT NULL,
-	to_date Date NOT NULL
+	to_date Date NOT NULL,
+	active boolean NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE reserved_rooms (

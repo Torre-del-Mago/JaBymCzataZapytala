@@ -17,5 +17,9 @@ namespace Hotel.Command.Model
         [Required]
         [Column("to_date")]
         public DateTime ToDate { get; set; }
+
+        [Required]
+        [Column("active")]
+        public bool Active { get; set; } = true;
     }
 }

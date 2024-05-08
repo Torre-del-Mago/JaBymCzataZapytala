@@ -19,8 +19,6 @@ namespace Hotel.Command.Repository.CanceledReservation
                 ReservationId = command.ReservationId,
             };
             await _context.CanceledReservations.AddAsync(reservationEvent);
-            var active = _context.Reservations.First(x => x.Id == command.ReservationId);
-            _context.Reservations.Remove(active);
             await _context.SaveChangesAsync();
             return reservationEvent;
         }
