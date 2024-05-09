@@ -4,14 +4,12 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Hotel.Query.Model
 {
-    public class Reservation
+    public class ReservedRoom
     {
         public int Id { get; set; }
 
-        public DateOnly FromDate { get; set; }
+        public int HotelRoomTypeId { get; set; }
 
-        public DateOnly ToDate { get; set; }
-
-        public List<ReservedRoom> Rooms { get; set; }
+        public int NumberOfRooms { get; set; }
     }
 }

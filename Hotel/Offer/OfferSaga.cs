@@ -10,13 +10,12 @@ namespace Offer
         public int HotelId { get; set; }
         public string Country { get; set; }
         public string Town { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
+        public DateOnly startDate { get; set; }
+        public DateOnly endDate { get; set; }
         public Dictionary<int, int> RoomsDTO { get; set; }
         public string Airport { get; set; }
         public int NumberOfPeople { get; set; }
 
-        public int NumberOfTickets { get; set; }
         public int TripId {  get; set; }
 
         public Offer(ReservationOfferCommand command)
@@ -29,7 +28,6 @@ namespace Offer
             RoomsDTO = command.RoomsDTO;
             Airport = command.Airport;
             NumberOfPeople = command.NumberOfPeople;
-            NumberOfTickets = command.NumberOfTickets;
             TripId = command.TripId;
         }
     }
@@ -107,7 +105,7 @@ namespace Offer
                 {
                     ID = ctx.Saga.ID,
                     CorrelationId = ctx.Saga.CorrelationId,
-                    NumberOfTickets = ctx.Saga.Offer.NumberOfTickets,
+                    NumberOfTickets = ctx.Saga.Offer.NumberOfPeople,
                     TripId = ctx.Saga.Offer.TripId
                 }).TransitionTo(WaitingForTransport),
 
