@@ -7,8 +7,8 @@ namespace Messages
         public string ID { get; set; }
         public Guid CorrelationId { get; set; }
         public int HotelId { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateOnly FromDate { get; set; }
+        public DateOnly ToDate { get; set; }
         //Key is room type id, value is number of rooms 
         public Dictionary<int, int> RoomsDTO { get; set; }
     }
@@ -70,13 +70,15 @@ namespace Messages
         public int HotelId {  get; set; }
         public string Country {  get; set; }
         public string Town { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
+        public DateOnly startDate { get; set; }
+        public DateOnly endDate { get; set; }
+        /*
+         Klucz to roomTypeId,
+         Wartość to ilość pokoi tego typu
+         */
         public Dictionary<int, int> RoomsDTO { get; set;}
         public string Airport { get; set; }
         public int NumberOfPeople { get; set; }
-
-        public int NumberOfTickets { get; set; }
         public int TripId { get; set; }
     }
 
