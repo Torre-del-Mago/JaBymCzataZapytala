@@ -72,6 +72,10 @@ namespace Messages
         public string Town { get; set; }
         public DateOnly startDate { get; set; }
         public DateOnly endDate { get; set; }
+        /*
+         Klucz to roomTypeId,
+         Wartość to ilość pokoi tego typu
+         */
         public Dictionary<int, int> RoomsDTO { get; set;}
         public string Airport { get; set; }
         public int NumberOfPeople { get; set; }

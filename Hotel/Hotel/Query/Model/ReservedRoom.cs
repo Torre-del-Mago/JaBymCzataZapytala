@@ -9,6 +9,7 @@ namespace Hotel.Query.Model
         public int Id { get; set; }
 
         public int HotelRoomTypeId { get; set; }
+        public int RoomTypeId { get; set; }
 
         public int NumberOfRooms { get; set; }
     }

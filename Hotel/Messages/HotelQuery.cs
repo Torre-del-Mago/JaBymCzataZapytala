@@ -37,6 +37,8 @@ namespace Messages
         public int Id { get; set; }
         public string Name { get; set; }
         public int NumberOfPeople { get; set; }
+
+        public int NumberOfRooms { get; set; }
     }
 
     public class Diet
