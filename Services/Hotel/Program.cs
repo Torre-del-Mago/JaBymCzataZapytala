@@ -2,6 +2,9 @@ using Hotel.Command.CommandHandler;
 using Hotel.Command.Repository;
 using Hotel.Command.Repository.BookedReservation;
 using Hotel.Command.Repository.CanceledReservation;
+using Hotel.Query.Projector;
+using Hotel.Query.Repository.HotelInfoRepository;
+using Hotel.Query.Repository.ReservationRepository;
 using Hotel.Service.MessageSender;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -18,6 +21,10 @@ builder.Services.AddScoped<IBookedReservationRepository, BookedReservationReposi
 builder.Services.AddScoped<ICanceledReservationRepository, CanceledReservationRepository>();
 builder.Services.AddScoped<IHotelCommandHandler, HotelCommandHandler>();
 builder.Services.AddScoped<IMessageSender, MessageSender>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IHotelInfoRepository, HotelInfoRepository>();
+builder.Services.AddScoped<IHotelEventProjector, HotelEventProjector>();
+
 
 // Add DbContext to the container
 builder.Services.AddDbContext<HotelContext>(options =>

@@ -10,11 +10,15 @@ namespace Hotel.Command.Model
         public int Id { get; set; }
 
         [Required]
+        [Column("hotel_id")]
+        public int HotelId { get; set; }
+
+        [Required]
         [Column("from_date")]
-        public DateTime FromDate { get; set; }
+        public DateOnly FromDate { get; set; }
 
         [Required]
         [Column("to_date")]
-        public DateTime ToDate { get; set; }
+        public DateOnly ToDate { get; set; }
     }
 }

@@ -29,16 +29,9 @@ namespace Hotel.Service.MessageSender
             });
         }
 
-        public async Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command)
+        public async Task SendBookedReservationEvent(ReservationDTO reservation)
         {
-            await _endpoint.Publish<ReservationDTO>(new ReservationDTO()
-            {
-                ReservationId = reservationEvent.Id,
-                FromDate = command.FromDate,
-                ToDate = command.ToDate,
-                HotelId = command.HotelId,
-                RoomsDTO = command.RoomsDTO
-            });
+            await _endpoint.Publish<ReservationDTO>(reservation);
         }
 
         public async Task SendCanceledReservationEvent(CanceledReservationCommand command)

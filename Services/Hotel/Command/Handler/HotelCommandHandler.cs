@@ -30,7 +30,7 @@ namespace Hotel.Command.CommandHandler
                 return;
             }
 
-            BookedReservationEvent bookedEvent = await _bookedRepo.insertEvent(command);
+            var bookedEvent = await _bookedRepo.insertEvent(command);
             await _messageSender.SendPositiveResponseToOffer(command, bookedEvent);
             await _messageSender.SendBookedReservationEvent(bookedEvent, command);
         }
