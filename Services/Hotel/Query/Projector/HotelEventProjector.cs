@@ -17,7 +17,7 @@ namespace Hotel.Query.Projector
             _client = new MongoClient(connectionUri);
             _database = _client.GetDatabase("hotel_read");
         }
-        public async Task projectEvent(ReservationDTO reservationDTO)
+        public async Task projectEvent(ReservationEvent reservationDTO)
         {
             _reservationRepository.addReservation(new Model.Reservation
             {
@@ -34,7 +34,7 @@ namespace Hotel.Query.Projector
             });
         }
 
-        public async Task projectEvent(CanceledReservationDTO canceledReservationDTO)
+        public async Task projectEvent(CanceledReservationEvent canceledReservationDTO)
         {
             _reservationRepository.deleteReservation(canceledReservationDTO.ReservationId);
         }

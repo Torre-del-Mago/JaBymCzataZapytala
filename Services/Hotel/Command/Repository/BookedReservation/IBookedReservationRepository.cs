@@ -8,6 +8,6 @@ namespace Hotel.Command.Repository.BookedReservation
     {
         Task<bool> canReservationBeMade(BookedReservationCommand command);
 
-        Task<ReservationDTO> insertEvent(BookedReservationCommand command);
+        Task<ReservationEvent> insertEvent(BookedReservationCommand command);
     }
 }

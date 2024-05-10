@@ -52,7 +52,7 @@ namespace Hotel.Command.Repository.BookedReservation
             return true;
         }
 
-        public async Task<ReservationDTO> insertEvent(BookedReservationCommand command)
+        public async Task<ReservationEvent> insertEvent(BookedReservationCommand command)
         {
             BookedReservationEvent reservationEvent = new BookedReservationEvent()
             {
@@ -82,7 +82,7 @@ namespace Hotel.Command.Repository.BookedReservation
 
             await _context.SaveChangesAsync();
 
-            return new ReservationDTO()
+            return new ReservationEvent()
             {
                 ReservationId = reservationEvent.Id,
                 HotelId = reservationEvent.HotelId,
