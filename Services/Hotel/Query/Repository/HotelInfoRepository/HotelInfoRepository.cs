@@ -7,13 +7,14 @@ using Npgsql.TypeMapping;
 namespace Hotel.Query.Repository.HotelInfoRepository
 {
     using FreeRoomsInHotel = Dictionary<int, int>;
+    using RoomTypesInHotel = Dictionary<int, int>;
     public class RoomTypeInfo
     {
         public String Name { get; set; }
         public int NumberOfPeople { get; set; } 
     }
-    
-    public class HotelInfoRepository: IHotelInfoRepository
+
+    public class HotelInfoRepository : IHotelInfoRepository
     {
         const string connectionUri = "mongodb://mongo:27017";
         private IReservationRepository _reservationRepository { get; set; }
@@ -26,11 +27,11 @@ namespace Hotel.Query.Repository.HotelInfoRepository
             _database = _client.GetDatabase("hotel_read");
         }
 
-        
+
         public async Task<FreeRoomsInHotel> getFreeRoomsInHotel(Model.Hotel hotel)
         {
             var result = new FreeRoomsInHotel();
-            
+
             foreach (HotelRoomType hrt in hotel.RoomTypes)
             {
                 result[hrt.RoomTypeId] = hrt.NumberOfRooms;
@@ -72,7 +73,7 @@ namespace Hotel.Query.Repository.HotelInfoRepository
         public async Task<Dictionary<int, FreeRoomsInHotel>> getRoomsInHotelsInCountry(List<Model.Hotel> hotels)
         {
             var result = new Dictionary<int, FreeRoomsInHotel>();
-            foreach(var hotel in hotels)
+            foreach (var hotel in hotels)
             {
                 var roomsInHotel = new FreeRoomsInHotel();
                 foreach (HotelRoomType hrt in hotel.RoomTypes)
@@ -80,6 +81,31 @@ namespace Hotel.Query.Repository.HotelInfoRepository
                     roomsInHotel[hrt.RoomTypeId] = hrt.NumberOfRooms;
                 }
                 result[hotel.Id] = roomsInHotel;
+            }
+            return result;
+        }
+
+        public async Task<RoomTypesInHotel> getRoomTypesInHotel(Model.Hotel hotel)
+        {
+            var result = new RoomTypesInHotel();
+            foreach (HotelRoomType hrt in hotel.RoomTypes)
+            {
+                result[hrt.Id] = hrt.RoomTypeId;
+            }
+            return result;
+        }
+
+        public async Task<Dictionary<int, RoomTypesInHotel>> getRoomTypesInHotelsInCountry(List<Model.Hotel> hotels) 
+        {
+            var result = new Dictionary<int, RoomTypesInHotel>();
+            foreach(var hotel in hotels)
+            {
+                var hotelRoomTypes = new RoomTypesInHotel();
+                foreach (HotelRoomType hrt in hotel.RoomTypes)
+                {
+                    hotelRoomTypes[hrt.Id] = hrt.RoomTypeId;
+                }
+                result[hotel.Id] = (hotelRoomTypes);
             }
             return result;
         }
@@ -96,6 +122,7 @@ namespace Hotel.Query.Repository.HotelInfoRepository
             {
                 return null;
             }
+            var roomTypeInHotelTask = getRoomTypesInHotel(hotel);
             var hotelRoomsTask = getFreeRoomsInHotel(hotel);
 
            
@@ -115,11 +142,12 @@ namespace Hotel.Query.Repository.HotelInfoRepository
             List<Reservation> reservations = await reservationTask;
             var hotelRooms = await hotelRoomsTask;
 
+            var roomTypesInHotel = await roomTypeInHotelTask;
             foreach(Reservation r in reservations)
             {
                 foreach(ReservedRoom rr in r.Rooms)
                 {
-                    hotelRooms[rr.RoomTypeId] -= rr.NumberOfRooms;
+                    hotelRooms[roomTypesInHotel[rr.HotelRoomTypeId]] -= rr.NumberOfRooms;
                 }
             }
 
@@ -147,6 +175,7 @@ namespace Hotel.Query.Repository.HotelInfoRepository
             var hotelCollection = _database.GetCollection<Model.Hotel>("hotels");
             var filter = Builders<Model.Hotel>.Filter.Eq<String>(h => h.Country, query.Country);
             var hotelsInCountry = hotelCollection.Find(filter).ToList();
+            var hotelRoomTypesTask = getRoomTypesInHotelsInCountry(hotelsInCountry); 
             var hotelRoomsTask = getRoomsInHotelsInCountry(hotelsInCountry);
             var hotelIds = hotelsInCountry.Select(h => h.Id).ToList();
             var reservationsTask = _reservationRepository.GetReservationsByDatesAndHotelIds(hotelIds, query.From, query.To);
@@ -174,12 +203,14 @@ namespace Hotel.Query.Repository.HotelInfoRepository
 
             var reservations = await reservationsTask;
             var roomsInHotels = await hotelRoomsTask;
+            var roomTypesForHotels = await hotelRoomTypesTask;
 
-            foreach(Reservation r in  reservations)
+            foreach (Reservation r in reservations)
             {
+                var hotelRoomTypes = roomTypesForHotels[r.HotelId];
                 foreach(ReservedRoom rr in r.Rooms)
                 {
-                    roomsInHotels[r.HotelId][rr.RoomTypeId] -= rr.NumberOfRooms;
+                    roomsInHotels[r.HotelId][hotelRoomTypes[rr.HotelRoomTypeId]] -= rr.NumberOfRooms;
                 }
             }
 
