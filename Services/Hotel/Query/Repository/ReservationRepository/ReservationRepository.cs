@@ -14,6 +14,7 @@ namespace Hotel.Query.Repository.ReservationRepository
         public ReservationRepository() { 
             _client = new MongoClient(connectionUri);
             _database = _client.GetDatabase("hotel_read");
+            _reservationCollection = _database.GetCollection<Reservation>("reservations");
         }
         public async Task addReservation(Reservation reservation)
         {

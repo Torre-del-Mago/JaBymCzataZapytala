@@ -181,10 +181,18 @@ namespace Hotel.Query.Repository.HotelInfoRepository
             var reservationsTask = _reservationRepository.GetReservationsByDatesAndHotelIds(hotelIds, query.From, query.To);
 
             /*
+            var reservationCollection = _database.GetCollection<Reservation>("reservations").AsQueryable();
+            var queryableHotelCollection = _database.GetCollection<Model.Hotel>("hotels").AsQueryable();
+            var joinquery = queryableHotelCollection.GroupJoin(reservationCollection.Where(r => r.FromDate <= query.From && r.ToDate >= query.To),
+                hotel => hotel.Id,
+                reservation => reservation.HotelId,
+                (hotel, reservations) => new { HotelId = hotel.Id, Reservations = reservations });
+            */
+            /*
              * Create task with loading rooms for hotel
              For each hotel create response
              */
-            List<HotelQueryResponse> hotels = new List<HotelQueryResponse>();
+            List <HotelQueryResponse> hotels = new List<HotelQueryResponse>();
             foreach(var hotel in hotelsInCountry)
             {
                 var response = new HotelQueryResponse()
@@ -200,6 +208,8 @@ namespace Hotel.Query.Repository.HotelInfoRepository
                 };
                 hotels.Add(response);
             }
+
+            
 
             var reservations = await reservationsTask;
             var roomsInHotels = await hotelRoomsTask;
