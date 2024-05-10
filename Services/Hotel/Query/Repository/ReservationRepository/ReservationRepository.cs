@@ -31,7 +31,14 @@ namespace Hotel.Query.Repository.ReservationRepository
         public async Task<List<Reservation>> GetReservationsByHotelIdAndDate(int HotelId, DateTime fromDate, DateTime toDate)
         {
             var builder = Builders<Reservation>.Filter;
-            var filter = builder.Eq<int>(r => r.Id, HotelId) & builder.Lt<DateTime>(r => r.FromDate, fromDate) & builder.Gt<DateTime>(r => r.ToDate, toDate);
+            var filter = builder.Eq<int>(r => r.HotelId, HotelId) & builder.Lt<DateOnly>(r => r.FromDate, fromDate) & builder.Gt<DateOnly>(r => r.ToDate, toDate);
+            return _reservationCollection.Find(filter).ToList();
+        }
+
+        public async Task<List<Reservation>> GetReservationsByDatesAndHotelIds(List<int> hotelIds, DateOnly fromDate, DateOnly toDate)
+        {
+            var builder = Builders<Reservation>.Filter;
+            var filter = builder.In<int>(r => r.HotelId, hotelIds) & builder.Lte<DateOnly>(r => r.FromDate, fromDate) & builder.Gte<DateOnly>(r => r.ToDate, toDate);
             return _reservationCollection.Find(filter).ToList();
         }
     }
