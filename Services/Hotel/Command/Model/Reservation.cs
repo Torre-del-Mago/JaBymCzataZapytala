@@ -11,6 +11,10 @@ namespace Hotel.Command.Model
         public int Id { get; set; }
 
         [Required]
+        [Column("hotel_id")]
+        public int HotelId { get; set; }
+
+        [Required]
         [Column("from_date")]
         public DateTime FromDate { get; set; }
 

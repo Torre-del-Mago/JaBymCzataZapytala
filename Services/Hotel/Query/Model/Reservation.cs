@@ -8,6 +8,7 @@ namespace Hotel.Query.Model
     {
         public int Id { get; set; }
 
+        public int HotelId { get; set; }
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }

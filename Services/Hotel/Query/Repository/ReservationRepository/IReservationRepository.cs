@@ -8,6 +8,8 @@ namespace Hotel.Query.Repository.ReservationRepository
 
         Task deleteReservation(int reservationId);
 
-        Task<List<Reservation>> GetReservationsByHotelIdAndDate(int HotelId, DateTime fromDate, DateTime toDate);
+        Task<List<Reservation>> GetReservationsByHotelIdAndDate(int HotelId, DateOnly fromDate, DateOnly toDate);
+
+        Task<List<Reservation>> GetReservationsByDatesAndHotelIds(List<int> hotelIds, DateOnly fromDate, DateOnly toDate);
     }
 }

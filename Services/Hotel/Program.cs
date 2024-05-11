@@ -1,10 +1,17 @@
 using Hotel.Command.CommandHandler;
-using Hotel.Command.Repository;
+using Hotel.Command.Consumer;
 using Hotel.Command.Repository.BookedReservation;
 using Hotel.Command.Repository.CanceledReservation;
+using Hotel.Query.Consumer;
+using Hotel.Query.Handler;
+using Hotel.Query.Projector;
+using Hotel.Query.Repository.HotelInfoRepository;
+using Hotel.Query.Repository.ReservationRepository;
 using Hotel.Service.MessageSender;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using MassTransit;
+using MassTransit.AspNetCoreIntegration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +25,28 @@ builder.Services.AddScoped<IBookedReservationRepository, BookedReservationReposi
 builder.Services.AddScoped<ICanceledReservationRepository, CanceledReservationRepository>();
 builder.Services.AddScoped<IHotelCommandHandler, HotelCommandHandler>();
 builder.Services.AddScoped<IMessageSender, MessageSender>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IHotelInfoRepository, HotelInfoRepository>();
+builder.Services.AddScoped<IHotelEventProjector, HotelEventProjector>();
+builder.Services.AddScoped<IHotelQueryHandler, HotelQueryHandler>();
+
+builder.Services.AddMassTransit(x =>
+    x.UsingRabbitMq((context, cfg) => {
+        cfg.Host("rabbitmq", 5672, "guest", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+        cfg.ReceiveEndpoint("hotel-command-queue", e =>
+        {
+            e.ConfigureConsumer<HotelCommandConsumer>(context);
+        })
+        cfg.ReceiveEndpoint("hotel-event-queue", e =>
+        {
+            e.ConfigureConsumer<HotelEventConsumer>(context);
+        });
+        cfg.ConfigureEndpoints(context);
+    }));
 
 // Add DbContext to the container
 builder.Services.AddDbContext<HotelContext>(options =>
@@ -34,6 +63,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseAuthorization();
 

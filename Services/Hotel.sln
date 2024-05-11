@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel", "Hotel\Hotel.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages", "Messages\Messages.csproj", "{D6394837-1A5C-476E-8E7F-5D9F1D06ABBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offer", "Offer\Offer.csproj", "{10F51866-BCE4-4876-BEC7-5C64EA3C2691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offer", "Offer\Offer.csproj", "{10F51866-BCE4-4876-BEC7-5C64EA3C2691}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

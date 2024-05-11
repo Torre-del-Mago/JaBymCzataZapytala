@@ -1,5 +1,6 @@
 ﻿using Hotel.Command.Model;
 using Hotel.DTO;
+using Hotel.Query.Model;
 using MassTransit;
 using Messages;
 
@@ -8,8 +9,11 @@ namespace Hotel.Service.MessageSender
     public class MessageSender : IMessageSender
     {
         private IPublishEndpoint _endpoint;
-        public MessageSender(IPublishEndpoint endpoint) { 
+        private ISendEndpointProvider _provider;
+        public MessageSender(IPublishEndpoint endpoint, ISendEndpointProvider provider)
+        {
             this._endpoint = endpoint;
+            _provider = provider;
         }
         public async Task SendNegativeResponseToOffer(BookedReservationCommand command)
         {
@@ -29,24 +33,24 @@ namespace Hotel.Service.MessageSender
             });
         }
 
-        public async Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command)
+        public async Task SendBookedReservationEvent(ReservationEvent reservation)
         {
-            await _endpoint.Publish<ReservationDTO>(new ReservationDTO()
-            {
-                ReservationId = reservationEvent.Id,
-                FromDate = command.FromDate,
-                ToDate = command.ToDate,
-                HotelId = command.HotelId,
-                RoomsDTO = command.RoomsDTO
-            });
+            await _provider.GetSendEndpoint(new Uri("queue:hotel-event-queue"));
+            await _provider.Send(reservation);
         }
 
         public async Task SendCanceledReservationEvent(CanceledReservationCommand command)
         {
-            await _endpoint.Publish<CanceledReservationDTO>(new CanceledReservationDTO()
+            await _provider.GetSendEndpoint(new Uri("queue:hotel-event-queue"));
+            await _provider.Send(new DTO.CanceledReservationEvent()
             {
                 ReservationId = command.ReservationId
             });
+        }
+
+        public Task SendBookedReservationEvent(BookedReservationEvent reservationEvent, BookedReservationCommand command)
+        {
+            throw new NotImplementedException();
         }
     }
 }

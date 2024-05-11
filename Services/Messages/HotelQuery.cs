@@ -21,6 +21,7 @@ namespace Messages
 
     public class HotelQueryResponse
     {
+        public int HotelId { get; set; }
         public String HotelName {  get; set; }
         public String City { get; set; }
         public String Country { get; set; }
@@ -48,6 +49,6 @@ namespace Messages
     }
     public class HotelListQueryResponse
     {
-        public List<HotelQueryResponse> hotels { get; set; }
+        public List<HotelQueryResponse> Hotels { get; set; }
     }
 }
