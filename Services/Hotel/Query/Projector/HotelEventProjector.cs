@@ -1,6 +1,8 @@
 ﻿using Hotel.DTO;
 using Hotel.Query.Repository.ReservationRepository;
+using Messages;
 using MongoDB.Driver;
+using static Hotel.Query.Model.ReservedRoom;
 
 namespace Hotel.Query.Projector
 {

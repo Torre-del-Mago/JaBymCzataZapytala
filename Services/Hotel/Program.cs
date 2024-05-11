@@ -8,8 +8,6 @@ using Hotel.Query.Projector;
 using Hotel.Query.Repository.HotelInfoRepository;
 using Hotel.Query.Repository.ReservationRepository;
 using Hotel.Service.MessageSender;
-using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using MassTransit;
 using MassTransit.AspNetCoreIntegration;
 
@@ -40,17 +38,13 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint("hotel-command-queue", e =>
         {
             e.ConfigureConsumer<HotelCommandConsumer>(context);
-        })
+        });
         cfg.ReceiveEndpoint("hotel-event-queue", e =>
         {
             e.ConfigureConsumer<HotelEventConsumer>(context);
         });
         cfg.ConfigureEndpoints(context);
     }));
-
-// Add DbContext to the container
-builder.Services.AddDbContext<HotelContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DbPath")));
 
 
 //hotel-command-queue

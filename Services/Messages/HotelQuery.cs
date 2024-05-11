@@ -6,16 +6,16 @@ namespace Messages
     public class HotelQuery
     {
         public int HotelId { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
         public int NumberOfPeople { get; set; }
     }
 
     public class HotelListQuery
     {
         public String Country { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateOnly From { get; set; }
+        public DateOnly To { get; set; }
         public int NumberOfPeople { get; set; }
     }
 
@@ -26,8 +26,8 @@ namespace Messages
         public String City { get; set; }
         public String Country { get; set; }
         public float Discount { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateOnly FromDate { get; set; }
+        public DateOnly ToDate { get; set; }
         public List<Room> Rooms {  get; set; }
 
         public List<Diet> Diets {  get; set; }

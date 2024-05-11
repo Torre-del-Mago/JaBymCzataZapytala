@@ -10,8 +10,8 @@ namespace Offer
         public int HotelId { get; set; }
         public string Country { get; set; }
         public string Town { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
+        public DateOnly startDate { get; set; }
+        public DateOnly endDate { get; set; }
         public Dictionary<int, int> RoomsDTO { get; set; }
         public string Airport { get; set; }
         public int NumberOfPeople { get; set; }

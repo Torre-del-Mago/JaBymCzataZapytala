@@ -88,7 +88,7 @@ namespace Hotel.Command.Repository.BookedReservation
                 HotelId = reservationEvent.HotelId,
                 FromDate = reservationEvent.FromDate, 
                 ToDate = reservationEvent.ToDate,
-                RoomsDTO = hotelRoomsEvents
+                // RoomsDTO = hotelRoomsEvents
             };
 
         }

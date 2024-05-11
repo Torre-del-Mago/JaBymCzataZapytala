@@ -29,7 +29,7 @@ namespace Hotel.Query.Repository.ReservationRepository
             return;
         }
 
-        public async Task<List<Reservation>> GetReservationsByHotelIdAndDate(int HotelId, DateTime fromDate, DateTime toDate)
+        public async Task<List<Reservation>> GetReservationsByHotelIdAndDate(int HotelId, DateOnly fromDate, DateOnly toDate)
         {
             var builder = Builders<Reservation>.Filter;
             var filter = builder.Eq<int>(r => r.HotelId, HotelId) & builder.Lt<DateOnly>(r => r.FromDate, fromDate) & builder.Gt<DateOnly>(r => r.ToDate, toDate);

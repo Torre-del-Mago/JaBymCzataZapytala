@@ -31,8 +31,9 @@ namespace Hotel.Command.CommandHandler
             }
 
             var bookedEvent = await _bookedRepo.insertEvent(command);
-            await _messageSender.SendPositiveResponseToOffer(command, bookedEvent);
-            await _messageSender.SendBookedReservationEvent(bookedEvent, command);
+            // TODO
+            //await _messageSender.SendPositiveResponseToOffer(command, bookedEvent);
+            //await _messageSender.SendBookedReservationEvent(bookedEvent, command);
         }
 
         public async Task HandleCommand(CanceledReservationCommand command)
