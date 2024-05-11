@@ -12,11 +12,11 @@ namespace Hotel.Command.Model
 
         [Required]
         [Column("from_date")]
-        public DateOnly FromDate { get; set; }
+        public DateTime FromDate { get; set; }
 
         [Required]
         [Column("to_date")]
-        public DateOnly ToDate { get; set; }
+        public DateTime ToDate { get; set; }
 
         [Required]
         [Column("active")]

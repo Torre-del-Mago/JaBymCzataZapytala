@@ -1,7 +1,10 @@
 using Hotel.Command.CommandHandler;
+using Hotel.Command.Repository;
 using Hotel.Command.Repository.BookedReservation;
 using Hotel.Command.Repository.CanceledReservation;
 using Hotel.Service.MessageSender;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,11 @@ builder.Services.AddScoped<IBookedReservationRepository, BookedReservationReposi
 builder.Services.AddScoped<ICanceledReservationRepository, CanceledReservationRepository>();
 builder.Services.AddScoped<IHotelCommandHandler, HotelCommandHandler>();
 builder.Services.AddScoped<IMessageSender, MessageSender>();
+
+// Add DbContext to the container
+builder.Services.AddDbContext<HotelContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DbPath")));
+
 
 //hotel-command-queue
 
