@@ -11,6 +11,7 @@ using Hotel.Service.MessageSender;
 using MassTransit;
 using MassTransit.AspNetCoreIntegration;
 using Serilog;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,30 +29,26 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IHotelInfoRepository, HotelInfoRepository>();
 builder.Services.AddScoped<IHotelEventProjector, HotelEventProjector>();
 builder.Services.AddScoped<IHotelQueryHandler, HotelQueryHandler>();
+builder.Services.AddScoped<HotelCommandConsumer>();
 builder.Services.AddSingleton<IStartupTask, StartupTask>();
 
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 
+
 builder.Services.AddMassTransit(x =>
-    x.UsingRabbitMq((context, cfg) => {
-        cfg.Host("rabbitmq", 5672, "guest", h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-        });
+{
+    x.AddConsumer<HotelCommandConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
         cfg.ReceiveEndpoint("hotel-command-queue", e =>
         {
             e.ConfigureConsumer<HotelCommandConsumer>(context);
         });
-        cfg.ReceiveEndpoint("hotel-event-queue", e =>
-        {
-            e.ConfigureConsumer<HotelEventConsumer>(context);
-        });
-        cfg.ConfigureEndpoints(context);
-    }));
-
+    });
+});
 
 //hotel-command-queue
 
@@ -69,6 +66,8 @@ app.UseSerilogRequestLogging();
 app.UseAuthorization();
 
 app.MapControllers();
+
+Console.WriteLine("KUCHTA1");
 
 var startupTask = app.Services.GetRequiredService<IStartupTask>();
 await startupTask.ExecuteAsync();

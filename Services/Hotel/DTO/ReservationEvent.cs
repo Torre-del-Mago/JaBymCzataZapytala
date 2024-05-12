@@ -3,7 +3,7 @@
 namespace Hotel.DTO
 {
     // Object should be transfered to Query component
-    public class ReservationEvent
+    public class ReservationEvent : EventModel
     {
         public int ReservationId { get; set; }
         public int HotelId { get; set; }

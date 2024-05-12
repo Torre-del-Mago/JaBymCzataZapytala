@@ -1,16 +1,25 @@
 
 
+using Hotel.Service.MessageSender;
+using Messages;
+using System.Diagnostics;
+
 public class StartupTask : IStartupTask
 {
     private readonly ILogger<StartupTask> _logger;
 
-    public StartupTask(ILogger<StartupTask> logger)
+    private IMessageSender _messageSender;
+
+    public StartupTask(ILogger<StartupTask> logger, IMessageSender messageSender)
     {
         _logger = logger;
+        _messageSender = messageSender;
     }
 
-    public Task ExecuteAsync()
+    public async Task ExecuteAsync()
     {
-        return new Task(() => _logger.LogDebug("Startup task executed."));
+        Console.WriteLine("KUCHTA2");
+        await _messageSender.SendCanceledReservationEvent(new CanceledReservationCommand() { ReservationId = 1234 });
+        Console.WriteLine("KUCHTA3");
     }
 }

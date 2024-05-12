@@ -42,7 +42,7 @@ namespace Hotel.Service.MessageSender
         public async Task SendCanceledReservationEvent(CanceledReservationCommand command)
         {
             await _provider.GetSendEndpoint(new Uri("queue:hotel-event-queue"));
-            await _provider.Send(new DTO.CanceledReservationEvent()
+            await _provider.Send<DTO.CanceledReservationEvent>(new
             {
                 ReservationId = command.ReservationId
             });
