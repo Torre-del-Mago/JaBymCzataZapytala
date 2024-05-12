@@ -1,5 +1,6 @@
 using Hotel.Command.CommandHandler;
 using Hotel.Command.Consumer;
+using Hotel.Command.Repository;
 using Hotel.Command.Repository.BookedReservation;
 using Hotel.Command.Repository.CanceledReservation;
 using Hotel.Query.Consumer;
@@ -29,8 +30,9 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IHotelInfoRepository, HotelInfoRepository>();
 builder.Services.AddScoped<IHotelEventProjector, HotelEventProjector>();
 builder.Services.AddScoped<IHotelQueryHandler, HotelQueryHandler>();
-builder.Services.AddScoped<HotelCommandConsumer>();
-builder.Services.AddSingleton<IStartupTask, StartupTask>();
+//builder.Services.AddScoped<HotelCommandConsumer>();
+builder.Services.AddDbContext<HotelContext>();
+//builder.Services.AddSingleton<IStartupTask, StartupTask>();
 
 builder.Services.AddAuthorization();
 
@@ -69,7 +71,9 @@ app.MapControllers();
 
 Console.WriteLine("KUCHTA1");
 
+/*
 var startupTask = app.Services.GetRequiredService<IStartupTask>();
 await startupTask.ExecuteAsync();
+*/
 
 app.Run();
