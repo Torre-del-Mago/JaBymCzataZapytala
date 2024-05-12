@@ -10,12 +10,13 @@ using Hotel.Query.Repository.ReservationRepository;
 using Hotel.Service.MessageSender;
 using MassTransit;
 using MassTransit.AspNetCoreIntegration;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +28,11 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IHotelInfoRepository, HotelInfoRepository>();
 builder.Services.AddScoped<IHotelEventProjector, HotelEventProjector>();
 builder.Services.AddScoped<IHotelQueryHandler, HotelQueryHandler>();
+builder.Services.AddSingleton<IStartupTask, StartupTask>();
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddControllers();
 
 builder.Services.AddMassTransit(x =>
     x.UsingRabbitMq((context, cfg) => {
@@ -58,10 +64,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+var startupTask = app.Services.GetRequiredService<IStartupTask>();
+await startupTask.ExecuteAsync();
 
 app.Run();

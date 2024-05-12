@@ -13,7 +13,7 @@ RUN dotnet restore "./Hotel/Hotel.csproj"
 
 COPY Services/Hotel/. ./Hotel/
 COPY Services/Messages/. ./Messages/
-RUN dotnet build "./Hotel/Hotel.csproj" -c Release -o /app/build
+RUN dotnet build "./Hotel/Hotel.csproj" -c Release -o /app/build -nowarn:CS8618
 
 FROM build AS publish
 RUN dotnet publish "./Hotel/Hotel.csproj" -c Release -o /app/publish --self-contained false --no-restore
